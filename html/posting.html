@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="stack index">
+    <meta name="author" content="Riggs">
+
+     <!--favicon icon-->
+    <link rel="icon" type="../image/png" href="../img/qmark.png">
+    <link href="../css/poststyle.css"  rel="stylesheet">
+    
+    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js"></script> -->
+	
+
+    
+    <title>Post new Question</title>
+ 
+ </head>
+ <body>
+	<div class ="wrapper">
+		
+		<div class="header">
+			<a href = "index.html"><img class="logo-brand" src="../img/logo.png" alt=""/>
+
+			<div class="menu-items">
+				<a href = "" class="login-link">log in</a>
+				<a href = "" class="login-link">sign up</a>
+				
+				<div class="search-container">
+                	<form id="search" action="/search" method="get" autocomplete="off">
+                    	<input name="q" type="text" placeholder="Search Q&amp;A" value="" tabindex="1" autocomplete="off" maxlength="240">
+                	</form>
+                </div>
+			</div>
+		</div>
+		
+		<div class="post-head-wrapper">
+			<h1> Ask Questions </h1>
+
+		</div>
+		<div class="posting-wrapper">
+			<textarea rows="10" cols="100">
+			</textarea>
+
+		</div>
+		<div class="subject-wrapper">
+			<form id="sub-search" action="/search" method="get" autocomplete="off">
+                    	<input name="q" type="text" placeholder="Search Subject" value="" tabindex="1" autocomplete="off" maxlength="240">
+                    	<a href = "" class="subject-search">Search</a>  	
+            </form> 
+
+		</div>
+		<div class="submit-button">
+			<a href = "" class="submit-link">Submit</a>
+		</div>
+ 
+	
+ </body>
+ </html>
