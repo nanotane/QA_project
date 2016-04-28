@@ -1,36 +1,96 @@
 package core_logic;
 
-import persistant_logic.P_Logic;
+import Entities.Answer;
+import Entities.Question;
+import Entities.User;
+import persistant_logic.DAOLayer;
+
+import java.lang.Throwable;
+import java.util.Date;
+import java.util.List;
+
+import exceptions.TestException;
 
 public class Logic 
 {
-	private P_Logic pLogic = new P_Logic();
+	//going to catch the java exception and show to screen
+	//remember no tags, remove tags
+	private DAOLayer DAO_obj = new DAOLayer();//persistent logic object
+	private ErrorHandler errorHandler = new ErrorHandler();
 	/**
 	 * Get the 10 newest posts and return
-	 * them to the frontend
+	 * them to the front end
 	 */
-	public void getNewestPosts()
+	public Question[] getNewestPosts()
 	{
-		//Persistant logic to get the posts
+		//Persistent logic to get the posts
+		return new Question[10];
+	}
+	/**
+	 * Get and sort the list of questions based on the vote number of each
+	 * If its more than the max size, then we will only grab answers
+	 * up to the max from the query
+	 * @param aQuestion the question we want answers from
+	 * @return sorted list of questions
+	 */
+	public Answer[] getAnswers(Question aQuestion)
+	{
+		int MAX_LIST = 100;
+		List<Answer> ansListTemp;
+		//Get information from a database call
+		//TODO
+		try
+		{
+			ansListTemp = DAO_obj.getAnswers(aQuestion.getQuestionID());
+		}
+		catch(TestException e)
+		{
+			return null;
+		}
+		
+		int ansTotal = ansListTemp.size();
+		Answer[] ansList = new Answer[MAX_LIST];//set the size of the list
+		
+		//get the answers from the temp list to the list we will return
+		if(ansTotal > MAX_LIST)
+		{
+			ansTotal = MAX_LIST;
+			for(int i = 0; i < MAX_LIST; i++)
+			{
+				ansList[i] = ansListTemp.get(i);
+			}
+		}
+		//just do a merge sort or bubble sort or what ever
+		
+		//now return the list
+		return ansList;
 	}
 	/**
 	 * Get the color of the user based
 	 * on the rank. 
 	 */
-	public String getUserColor(String userName)
+	public String getUserColor(int aUserID)
 	{
 		//ask for the users rank
-		int rank = 0; //TODO
+		User tempUser;
+		try
+		{
+			tempUser = DAO_obj.getUserInfo(aUserID);
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
 		//Now check the users rank and see what color they should get
-		if(rank < 10)
+		if(Integer.parseInt(tempUser.getUserLevel()) < 10)
 		{
 			return "red";
 		}
-		else if(rank < 25)
+		else if(Integer.parseInt(tempUser.getUserLevel()) < 25)
 		{
 			return "blue";
 		}
-		else if(rank < 55)
+		else if(Integer.parseInt(tempUser.getUserLevel()) < 55)
 		{
 			return "orange";
 		}
@@ -39,83 +99,147 @@ public class Logic
 	/**
 	 * modify the text for a post
 	 */
-	public void modifyPost(Post modedPost)
+	public String modifyPost(Question modedPost)
 	{
 		//set the modified post date
-		modedPost.setDateModified();
+		Date d = new Date();
+		try
+		{
+			modedPost.setDatePosted(d);
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
 		//call a persistent logic method
-		
+		return "A MESSAGE";
+	}
+	
+	public String modifyPost(Answer modedPost)
+	{
+		//set the modified post date
+		Date d = new Date();
+		try
+		{
+			modedPost.setDatePosted(d);
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
+		//call a persistent logic method
+		return "A MESSAGE";
 	}
 	/**
 	 * Check all of the users posts and votes
 	 * then send back the new rank
 	 */
-	public void checkRank(String username)
+	public int checkRank(String username)
 	{
 		//make a call to get the number of posts that the user has
-		int questions = 0;
-		int answers = 0;
-		int postVotes = 0;
-		
+		//TODO
 		//save the new rank with a persistant logic call
+		return 10;
 	}
 	/**
 	 * Add to the score of a posts
 	 */
-	public void addScore(Question question)
+	public String addScore(Answer anAnswer)
 	{
-		//make a persistant logic call to the 
+		//make a persistent logic call to add a score to the question
+		try
+		{
+			DAO_obj.voteAnswer(anAnswer.getAnswerID());
+			return "success";
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
+		
+		
 	}
 	/**
 	 * Get the owner of a specific post
 	 * either a question or answer
 	 * @return a string with the owners username
 	 */
-	public String getPostOwner(String postID)
+	public String getUserInfo(User aUser)
 	{
-		return "fail";
+		try
+		{
+			DAO_obj.getUserInfo(aUser.getUserID());
+			return "sucess";
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
 	}
 	/**
 	 * create a new user
 	 */
-	public void createUser()
+	public String createUser(User newUser)
 	{
-		
+		try
+		{
+			DAO_obj.signUp(newUser);
+			return "sucess";
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
 	}
 	/**
 	 * Send the sign in information and see
 	 * if it is a user
 	 */
-	public int signInUser(String username, String password)
+	public String signInUser(User userLogin)
 	{
-		//persistant logic call
-		//depending on the response we will get that error message
-		//and send it up the line
-		return 0;
+		//persistent logic call
+		try
+		{
+			DAO_obj.SignIn(userLogin);
+			return "sucess";
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
 	}
 	/**
 	 * Create a new answer
 	 */
-	public void createAnswer(Post newAsnwer)
+	public String createAnswer(Answer newAnswer, Question parentQuestion)
 	{
 		//need to get current date and store that
+		try
+		{
+			DAO_obj.postAnswer(parentQuestion.getQuestionID(),newAnswer);
+			return "sucess";
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
+		
 		
 	}
 	/**
 	 * create a new question
 	 */
-	public void createQuestion(Post newQuestion)
+	public String createQuestion(Question newQuestion)
 	{
-		//need to get current date and store that
-	}
-	/**
-	 * get the answers for a specific post
-	 */
-	public void getAnswers(String questionID)
-	{
-		//persistant logic call to get back an array of question json objects
-		
-		//return an array of them
+		try
+		{
+			DAO_obj.postQuestion(newQuestion);
+			return "sucess";
+		}
+		catch(TestException e)
+		{
+			return errorHandler.catchError(e);
+		}
 	}
 	/**
 	 * Gets a sentence and returns a list
@@ -123,6 +247,7 @@ public class Logic
 	 */
 	public void searchQuestions(String text)
 	{
+		//TODO
 		//first make a query asking for all key word terms
 		
 		//next we check and see if the text has any of the search terms
@@ -132,15 +257,5 @@ public class Logic
 		 * If list is not full, add something that only matches title
 		 * if list is still not full add something that only matches key word of post
 		 */
-	}
-	/**
-	 * This method will check the text and make sure 
-	 * that the text is not gonna mess up stuff
-	 * @param text
-	 * @return
-	 */
-	private String scrubText(String text)
-	{
-		return text;
 	}
 }
