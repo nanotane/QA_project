@@ -16,7 +16,6 @@ public class Logic
 	//going to catch the java exception and show to screen
 	//remember no tags, remove tags
 	private DAOLayer DAO_obj = new DAOLayer();//persistent logic object
-	private ErrorHandler errorHandler = new ErrorHandler();
 	/**
 	 * Get the 10 newest posts and return
 	 * them to the front end
@@ -24,6 +23,7 @@ public class Logic
 	public Question[] getNewestPosts()
 	{
 		//Persistent logic to get the posts
+		//TODO
 		return new Question[10];
 	}
 	/**
@@ -37,20 +37,11 @@ public class Logic
 	{
 		int MAX_LIST = 100;
 		List<Answer> ansListTemp;
-		//Get information from a database call
-		//TODO
-		try
-		{
-			ansListTemp = DAO_obj.getAnswers(aQuestion.getQuestionID());
-		}
-		catch(TestException e)
-		{
-			return null;
-		}
-		
+		ansListTemp = DAO_obj.getAnswers(aQuestion.getQuestionID());
+
 		int ansTotal = ansListTemp.size();
 		Answer[] ansList = new Answer[MAX_LIST];//set the size of the list
-		
+
 		//get the answers from the temp list to the list we will return
 		if(ansTotal > MAX_LIST)
 		{
@@ -61,7 +52,7 @@ public class Logic
 			}
 		}
 		//just do a merge sort or bubble sort or what ever
-		
+
 		//now return the list
 		return ansList;
 	}
@@ -73,14 +64,7 @@ public class Logic
 	{
 		//ask for the users rank
 		User tempUser;
-		try
-		{
-			tempUser = DAO_obj.getUserInfo(aUserID);
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
+		tempUser = DAO_obj.getUserInfo(aUserID);
 		//Now check the users rank and see what color they should get
 		if(Integer.parseInt(tempUser.getUserLevel()) < 10)
 		{
@@ -97,37 +81,30 @@ public class Logic
 		return "black";//for low ranks its just black
 	}
 	/**
-	 * modify the text for a post
+	 * modify the text for a question
 	 */
 	public String modifyPost(Question modedPost)
 	{
 		//set the modified post date
 		Date d = new Date();
-		try
-		{
-			modedPost.setDatePosted(d);
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
+		modedPost.setDatePosted(d);
+		//TODO
 		//call a persistent logic method
 		return "A MESSAGE";
 	}
-	
+	/**
+	 * Modify the text for an answer
+	 * @param modedPost
+	 * @return
+	 */
 	public String modifyPost(Answer modedPost)
 	{
-		//set the modified post date
-		Date d = new Date();
-		try
-		{
-			modedPost.setDatePosted(d);
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
-		//call a persistent logic method
+//		//set the modified post date
+//		Date d = new Date();
+//		modedPost.setDatePosted(d);
+//		DAO_obj
+//		//call a persistent logic method
+		//TODO
 		return "A MESSAGE";
 	}
 	/**
@@ -146,100 +123,52 @@ public class Logic
 	 */
 	public String addScore(Answer anAnswer)
 	{
-		//make a persistent logic call to add a score to the question
-		try
-		{
-			DAO_obj.voteAnswer(anAnswer.getAnswerID());
-			return "success";
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
-		
-		
+		DAO_obj.voteAnswer(anAnswer.getAnswerID());
+		return "success";
+		//TODO
 	}
 	/**
 	 * Get the owner of a specific post
 	 * either a question or answer
 	 * @return a string with the owners username
 	 */
-	public String getUserInfo(User aUser)
+	public User getUserInfo(User aUser)
 	{
-		try
-		{
-			DAO_obj.getUserInfo(aUser.getUserID());
-			return "sucess";
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
+		return DAO_obj.getUserInfo(aUser.getUserID());
+
 	}
 	/**
 	 * create a new user
 	 */
-	public String createUser(User newUser)
+	public boolean createUser(User newUser)
 	{
-		try
-		{
-			DAO_obj.signUp(newUser);
-			return "sucess";
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
+		return DAO_obj.signUp(newUser);
 	}
 	/**
 	 * Send the sign in information and see
 	 * if it is a user
 	 */
-	public String signInUser(User userLogin)
+	public boolean signInUser(User userLogin)
 	{
 		//persistent logic call
-		try
-		{
-			DAO_obj.SignIn(userLogin);
-			return "sucess";
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
+		return DAO_obj.SignIn(userLogin);
 	}
 	/**
 	 * Create a new answer
 	 */
-	public String createAnswer(Answer newAnswer, Question parentQuestion)
+	public boolean createAnswer(Answer newAnswer, Question parentQuestion)
 	{
 		//need to get current date and store that
-		try
-		{
-			DAO_obj.postAnswer(parentQuestion.getQuestionID(),newAnswer);
-			return "sucess";
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
-		
-		
+		return DAO_obj.postAnswer(parentQuestion.getQuestionID(),newAnswer);
 	}
 	/**
-	 * create a new question
+	 * This will create a question based on a new question object
+	 * @param newQuestion
+	 * @return
 	 */
-	public String createQuestion(Question newQuestion)
+	public boolean createQuestion(Question newQuestion)
 	{
-		try
-		{
-			DAO_obj.postQuestion(newQuestion);
-			return "sucess";
-		}
-		catch(TestException e)
-		{
-			return errorHandler.catchError(e);
-		}
+			return DAO_obj.postQuestion(newQuestion);
 	}
 	/**
 	 * Gets a sentence and returns a list
@@ -249,7 +178,7 @@ public class Logic
 	{
 		//TODO
 		//first make a query asking for all key word terms
-		
+
 		//next we check and see if the text has any of the search terms
 		//if not then lets check and see if any question titles have a term
 		/*
@@ -258,4 +187,6 @@ public class Logic
 		 * if list is still not full add something that only matches key word of post
 		 */
 	}
+	//ADD DELETE A QUESTION
+	//TODO
 }
