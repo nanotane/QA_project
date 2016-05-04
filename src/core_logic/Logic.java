@@ -59,8 +59,18 @@ public class Logic
 				ansList[i] = ansListTemp.get(i);
 			}
 		}
-		//just do a merge sort or bubble sort or what ever to get the top rated posts
-
+		//just do a simple sorting algorithm to put the highest posts at the top
+		Answer temp;
+		for(int i = 0; i < MAX_LIST-1; i++)
+		{
+			if(ansList[i].getVotes() < ansList[i+1].getVotes())
+			{
+				//if the first is less than the second then flip them
+				temp = ansList[i];
+				ansList[i] = ansList[i+1];
+				ansList[i+1] = temp;
+			}
+		}
 		//now return the list
 		return ansList;
 	}
@@ -108,9 +118,14 @@ public class Logic
 	/**
 	 * Add to the score of a posts
 	 */
-	public boolean addScore(Answer anAnswer)
+	public Answer addScore(Answer anAnswer)
 	{
-		return DAO_obj.voteAnswer(anAnswer.getAnswerID());
+		try {
+			return DAO_obj.voteAnswer(anAnswer.getAnswerID());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	/**
 	 * Get the owner of a specific post
