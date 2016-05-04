@@ -7,6 +7,7 @@ public class Question {
 	private String text;
 	private int votes;
 	private Date datePosted;
+	private Date dateModified;
 	private boolean isDeleted;
 	private List<Answer> answers=null;
 	
@@ -67,6 +68,14 @@ public class Question {
 	}
 	public void setAnswers(List<Answer> answers) {
 		this.answers = answers;
+	}
+	
+	//Modified
+	public Date getDateModified() {
+		return dateModified;
+	}
+	public void setDateModified(Date dateModified) {
+		this.dateModified = dateModified;
 	}
 	
 	
