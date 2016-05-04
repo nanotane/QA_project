@@ -97,7 +97,7 @@ public class DAOLayer {
 		      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		      stmt = conn.createStatement();
 		      String sql;
-		      sql = "SELECT * from (select TOP 10 * from Questions Order by datePosted DESC)";
+		      sql = "SELECT * from (select TOP 10 * from Questions where isDeleted=0 Order by datePosted DESC)";
 		     
 		      ResultSet rs1 = stmt.executeQuery(sql);
 		      
@@ -143,7 +143,7 @@ public class DAOLayer {
 			      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			      stmt = conn.createStatement();
 			      String sql;
-			      sql = "SELECT * from Questions where questionID="+questionID;
+			      sql = "SELECT * from Questions where questionID="+questionID+" AND isDeleted=0";
 			     
 			      ResultSet rs1 = stmt.executeQuery(sql);
 			      
@@ -368,7 +368,7 @@ public class DAOLayer {
 			      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			      stmt = conn.createStatement();
 			      String sql;
-			      sql = "insert in to Questions (questionText, datePosted, dateModified, userID,votes, isDeleted) values("+question.getText()+","+question.getDatePosted()+" ,"+question.getDateModified()+","+question.getUserID()+","+question.getVotes()+","+question.getDateModified()+")";
+			      sql = "insert in to Questions (questionText, datePosted, dateModified, userID,votes, isDeleted) values("+question.getText()+","+question.getDatePosted()+" ,"+question.getDateModified()+","+question.getUserID()+","+question.getVotes()+", 0)";
 			     
 			      stmt.executeQuery(sql);
 			     
