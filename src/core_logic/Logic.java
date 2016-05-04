@@ -14,8 +14,8 @@ public class Logic
 	//remember no tags, remove tags
 	private DAOLayer DAO_obj = new DAOLayer();//persistent logic object
 	/**
-	 * Get the 10 newest posts and return
-	 * them to the front end
+	 * Retrieves the 10 newest posts 
+	 * @return a list of questions
 	 */
 	public List<Question> getNewestPosts()
 	{
@@ -75,8 +75,9 @@ public class Logic
 		return ansList;
 	}
 	/**
-	 * Get the color of the user based
-	 * on the rank. 
+	 * Determine the user name's color based on the users score
+	 * @param aUserID the userID of who we are checking
+	 * @return a string that has the name of the color 
 	 */
 	public String getUserColor(String aUserID)
 	{
@@ -85,7 +86,6 @@ public class Logic
 		try {
 			tempUser = DAO_obj.getUserInfo(aUserID);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -116,7 +116,9 @@ public class Logic
 		return 10;
 	}
 	/**
-	 * Add to the score of a posts
+	 * Add to the score of an answer
+	 * @param anAnswer the answer object to add score to
+	 * @return the new user object
 	 */
 	public Answer addScore(Answer anAnswer)
 	{
@@ -128,22 +130,23 @@ public class Logic
 		}
 	}
 	/**
-	 * Get the owner of a specific post
-	 * either a question or answer
-	 * @return a string with the owners username
+	 * Get the user information
+	 * @param aUser object with the user name
+	 * @return a user object that has all relavent user information
 	 */
 	public User getUserInfo(User aUser)
 	{
 		try {
 			return DAO_obj.getUserInfo(aUser.getUserName());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 	}
 	/**
-	 * create a new user
+	 * Create a new user in the database
+	 * @param newUser the new user object that we are creating
+	 * @return if we were successful or not
 	 */
 	public boolean createUser(User newUser)
 	{
@@ -155,8 +158,9 @@ public class Logic
 		}
 	}
 	/**
-	 * Send the sign in information and see
-	 * if it is a user
+	 * Sign in a user 
+	 * @param userLogin the user object with the login information
+	 * @return if the user login information was correct or not
 	 */
 	public boolean signInUser(User userLogin)
 	{
@@ -169,7 +173,10 @@ public class Logic
 		}
 	}
 	/**
-	 * Create a new answer
+	 * Create a new answer on the website
+	 * @param newAnswer the answer object we are creating
+	 * @param parentQuestion the question that the answer is related to
+	 * @return the new answer objet that was created
 	 */
 	public Answer createAnswer(Answer newAnswer, Question parentQuestion)
 	{
@@ -185,9 +192,9 @@ public class Logic
 		}
 	}
 	/**
-	 * This will create a question based on a new question object
-	 * @param newQuestion
-	 * @return
+	 * Create a new question on the website
+	 * @param newQuestion the question object we want to add to the database
+	 * @return the new question object that was created
 	 */
 	public Question createQuestion(Question newQuestion)
 	{
@@ -200,11 +207,12 @@ public class Logic
 			e.printStackTrace();
 			return null;
 		}
-			
+
 	}
 	/**
-	 * 
-	 * @return
+	 * Tells the DAO to delete the given answer object
+	 * @param aQuestion the question object we are deleting
+	 * @return a boolean signifying if we were successful or not
 	 */
 	public boolean deleteQuestion(Question aQuestion)
 	{
@@ -212,9 +220,9 @@ public class Logic
 		//TODO maybe set up try catch
 	}
 	/**
-	 * 
-	 * @param anAnswer
-	 * @return
+	 * Tells the DAO to delete the given answer object
+	 * @param anAnswer the answer object we are deleting
+	 * @return a boolean signifying if we were successful or not
 	 */
 	public boolean deleteAnswer(Answer anAnswer)
 	{
@@ -222,8 +230,10 @@ public class Logic
 		//TODO get the proper method and maybe set up try catch
 	}
 	/**
-	 * Gets a sentence and returns a list
-	 * of 10 questions that best match
+	 * Searches the database for a list of Questions that match
+	 * a users search term
+	 * @param text the keyword to use for searching
+	 * @return a list of Question objects
 	 */
 	public List<Question> searchQuestions(String text)
 	{
@@ -235,8 +245,8 @@ public class Logic
 		}
 	}
 
-	public static void main(String args[])
-	{
-		//TODO set up the testing code
-	}
+//	public static void main(String args[])
+//	{
+//		Logic testLogic = new Logic();//create a new logic layer for testing
+//	}
 }
