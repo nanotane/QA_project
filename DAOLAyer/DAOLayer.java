@@ -98,6 +98,50 @@ public class DAOLayer {
 	   
 	
    }
+   
+   public Question getQuestion(int questionID) throws Exception
+   {
+	   Connection conn = null;
+		  Statement stmt = null; 
+		  Question q= new Question();
+		  try{
+				Class.forName("com.mysql.jdbc.Driver");
+
+				
+				
+			     
+			      conn = DriverManager.getConnection(DB_URL,USER,PASS);
+			      stmt = conn.createStatement();
+			      String sql;
+			      sql = "SELECT * from Questions where questionID="+questionID;
+			     
+			      ResultSet rs1 = stmt.executeQuery(sql);
+			      
+			      if(rs1.getFetchSize()<=0){
+			    	  return q;
+			      }
+			      else
+			      {
+			    	  
+			    	
+			    		  q.setQuestionID(rs1.getInt("questionID"));
+			    		  q.setText(rs1.getString("questionText"));
+			    		  q.setUserID(rs1.getInt("userID"));
+			    		  q.setDatePosted(rs1.getDate("datePosted"));
+			    		  q.setDateModified(rs1.getDate("dateModified"));
+			    		  q.setVotes(rs1.getInt("votes"));
+			    		  q.setDeleted(rs1.getBoolean("isDeleted"));
+			    		  
+			    	  }
+			    	  return q;
+			      
+			}
+			catch (Exception E)
+			{
+				throw E;
+			}
+		  
+   }
 
 	
 	public boolean SignIn(User user) throws Exception
@@ -280,7 +324,7 @@ public class DAOLayer {
 		
 	}
 	
-	public boolean postQuestion (Question question) throws Exception
+	public Question postQuestion (Question question) throws Exception
 	{
 		 Connection conn = null;
 		 Statement stmt = null;
@@ -298,8 +342,12 @@ public class DAOLayer {
 			     
 			      stmt.executeQuery(sql);
 			     
+			      ResultSet rs1= stmt.executeQuery("Select last_insert_id() as last_id from Questions");
+			      int questionID=rs1.getInt("last_id");
 			      
-			     return true;
+			      question.setQuestionID(questionID);
+			      
+			     return question;
 			}
 			catch (Exception E)
 			{
@@ -311,7 +359,7 @@ public class DAOLayer {
 		
 	}
 	
-	public boolean postAnswer (int questionID,Answer answer) throws Exception
+	public Answer postAnswer (int questionID,Answer answer) throws Exception
 	{
 		   Connection conn = null;
 		   Statement stmt = null;
@@ -325,11 +373,16 @@ public class DAOLayer {
 			      stmt = conn.createStatement();
 			      String sql;
 			      sql = "insert in to Answers (userID, questionID, answerText, votes, datePosted, dateModified) values("+answer.getUserID()+","+answer.getQuestionID()+" ,"+answer.getText()+","+answer.getVotes()+","+answer.getDatePosted()+","+answer.getDateModified()+")";
-			     
+			      
 			      stmt.executeQuery(sql);
+			      
+			      ResultSet rs1= stmt.executeQuery("Select last_insert_id() as last_id from Answers");
+			      int answerID=rs1.getInt("last_id");
+			      
+			      answer.setAnswerID(answerID);
 			     
 			      
-			     return true;
+			     return answer;
 			}
 			catch (Exception E)
 			{
@@ -338,10 +391,47 @@ public class DAOLayer {
 		  
 	}
 	//new Answer object returned
-	public boolean voteAnswer(int answerID)
+	public Answer voteAnswer(int answerID) throws Exception
 	{
 		 Connection conn = null;
 		 Statement stmt = null;
-		 return false;
+		 Answer ans= new Answer();
+		 int votes=0;
+		 try{
+				Class.forName("com.mysql.jdbc.Driver");
+
+
+			     
+			      conn = DriverManager.getConnection(DB_URL,USER,PASS);
+			      stmt = conn.createStatement();
+			      String sql,sql1;
+			     
+			      sql = "select * from answers where answerID="+answerID;
+			     
+			      ResultSet rs1=stmt.executeQuery(sql);
+			      ans.setAnswerID(answerID);
+			      ans.setText(rs1.getString("answerText"));
+			      ans.setUserID(rs1.getInt("userID"));
+			      ans.setDatePosted(rs1.getDate("datePosted"));
+			      ans.setDateModified(rs1.getDate("dateModified"));
+			      ans.setQuestionID(rs1.getInt("questionID"));
+			      int finalVotes=votes+1;
+			      ans.setVotes(finalVotes);
+			      sql1="UPDATE Answers SET votes="+finalVotes+"where answerID="+answerID;
+			      
+			      stmt.executeQuery(sql1);
+			      
+			      
+			      
+			      
+			     
+			      
+			     return ans;
+			}
+			catch (Exception E)
+			{
+				throw E;
+			}
+		
 	}
 }
