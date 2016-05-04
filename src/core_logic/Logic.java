@@ -17,11 +17,17 @@ public class Logic
 	 * Get the 10 newest posts and return
 	 * them to the front end
 	 */
-	public Question[] getNewestPosts()
+	public List<Question> getNewestPosts()
 	{
 		//Persistent logic to get the posts
-		//TODO
-		return new Question[10];
+		List<Question> qList;
+		try {
+			qList = DAO_obj.getQuestions();
+		} catch (Exception e) {
+			e.printStackTrace();
+			qList = null;
+		}
+		return qList;
 	}
 	/**
 	 * Get and sort the list of questions based on the vote number of each
@@ -37,7 +43,6 @@ public class Logic
 		try {
 			ansListTemp = DAO_obj.getAnswers(aQuestion.getQuestionID());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -54,7 +59,7 @@ public class Logic
 				ansList[i] = ansListTemp.get(i);
 			}
 		}
-		//just do a merge sort or bubble sort or what ever
+		//just do a merge sort or bubble sort or what ever to get the top rated posts
 
 		//now return the list
 		return ansList;
@@ -106,7 +111,6 @@ public class Logic
 	public boolean addScore(Answer anAnswer)
 	{
 		return DAO_obj.voteAnswer(anAnswer.getAnswerID());
-		//TODO
 	}
 	/**
 	 * Get the owner of a specific post
@@ -122,7 +126,6 @@ public class Logic
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 	/**
 	 * create a new user
@@ -132,7 +135,6 @@ public class Logic
 		try {
 			return DAO_obj.SignUp(newUser);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -147,7 +149,6 @@ public class Logic
 		try {
 			return DAO_obj.SignIn(userLogin);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -158,8 +159,15 @@ public class Logic
 	public Answer createAnswer(Answer newAnswer, Question parentQuestion)
 	{
 		//need to get current date and store that
-		return DAO_obj.postAnswer(parentQuestion.getQuestionID(),newAnswer);
-		//TODO get the 
+		try
+		{
+			return DAO_obj.postAnswer(parentQuestion.getQuestionID(),newAnswer);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	/**
 	 * This will create a question based on a new question object
@@ -168,7 +176,16 @@ public class Logic
 	 */
 	public Question createQuestion(Question newQuestion)
 	{
+		try
+		{
 			return DAO_obj.postQuestion(newQuestion);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+			
 	}
 	/**
 	 * 
@@ -176,7 +193,8 @@ public class Logic
 	 */
 	public boolean deleteQuestion(Question aQuestion)
 	{
-		return false;
+		return DAO_obj.deleteQuestion(aQuestion);
+		//TODO maybe set up try catch
 	}
 	/**
 	 * 
@@ -186,6 +204,7 @@ public class Logic
 	public boolean deleteAnswer(Answer anAnswer)
 	{
 		return false;
+		//TODO get the proper method and maybe set up try catch
 	}
 	/**
 	 * Gets a sentence and returns a list
@@ -196,7 +215,6 @@ public class Logic
 		try {
 			return DAO_obj.Search(text);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -204,6 +222,6 @@ public class Logic
 
 	public static void main(String args[])
 	{
-		
+		//TODO set up the testing code
 	}
 }
