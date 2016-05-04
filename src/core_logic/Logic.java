@@ -1,9 +1,8 @@
-package core_logic;
-
+package src.core_logic;
 import Entities.Answer;
 import Entities.Question;
 import Entities.User;
-import persistant_logic.DAOLayer;
+import DAOLAyer.DAOLayer;
 
 import java.lang.Throwable;
 import java.util.Date;
@@ -35,7 +34,13 @@ public class Logic
 	{
 		int MAX_LIST = 100;
 		List<Answer> ansListTemp;
-		ansListTemp = DAO_obj.getAnswers(aQuestion.getQuestionID());
+		try {
+			ansListTemp = DAO_obj.getAnswers(aQuestion.getQuestionID());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 
 		int ansTotal = ansListTemp.size();
 		Answer[] ansList = new Answer[MAX_LIST];//set the size of the list
@@ -58,11 +63,17 @@ public class Logic
 	 * Get the color of the user based
 	 * on the rank. 
 	 */
-	public String getUserColor(int aUserID)
+	public String getUserColor(String aUserID)
 	{
 		//ask for the users rank
 		User tempUser;
-		tempUser = DAO_obj.getUserInfo(aUserID);
+		try {
+			tempUser = DAO_obj.getUserInfo(aUserID);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 		//Now check the users rank and see what color they should get
 		if(Integer.parseInt(tempUser.getUserLevel()) < 10)
 		{
@@ -92,7 +103,7 @@ public class Logic
 	/**
 	 * Add to the score of a posts
 	 */
-	public Answer addScore(Answer anAnswer)
+	public boolean addScore(Answer anAnswer)
 	{
 		return DAO_obj.voteAnswer(anAnswer.getAnswerID());
 		//TODO
@@ -104,7 +115,13 @@ public class Logic
 	 */
 	public User getUserInfo(User aUser)
 	{
-		return DAO_obj.getUserInfo(aUser.getUserID());
+		try {
+			return DAO_obj.getUserInfo(aUser.getUserName());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 
 	}
 	/**
@@ -112,7 +129,13 @@ public class Logic
 	 */
 	public boolean createUser(User newUser)
 	{
-		return DAO_obj.signUp(newUser);
+		try {
+			return DAO_obj.SignUp(newUser);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	/**
 	 * Send the sign in information and see
@@ -121,7 +144,13 @@ public class Logic
 	public boolean signInUser(User userLogin)
 	{
 		//persistent logic call
-		return DAO_obj.SignIn(userLogin);
+		try {
+			return DAO_obj.SignIn(userLogin);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	/**
 	 * Create a new answer
@@ -162,18 +191,15 @@ public class Logic
 	 * Gets a sentence and returns a list
 	 * of 10 questions that best match
 	 */
-	public void searchQuestions(String text)
+	public List<Question> searchQuestions(String text)
 	{
-		//TODO
-		//first make a query asking for all key word terms
-
-		//next we check and see if the text has any of the search terms
-		//if not then lets check and see if any question titles have a term
-		/*
-		 * If something matches both requirments, then put it into the list
-		 * If list is not full, add something that only matches title
-		 * if list is still not full add something that only matches key word of post
-		 */
+		try {
+			return DAO_obj.Search(text);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public static void main(String args[])
