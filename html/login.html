@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="icon" type="image/png" href="../img/qmark.png">
+    <link href="../css/logandsign.css" rel="stylesheet">
+</head>
+<body>
+<div class ="wrapper">
+
+    <!-- header start -->
+    <div class="header">
+        <a href = "index.html"><img class="logo-brand" src="../img/logo.png" alt=""/>
+
+            <div class="menu-items">
+                <a href = "" class="login-link">log in</a>
+                <a href = "" class="login-link">sign up</a>
+
+                <div class="search-container">
+                    <form id="search" action="/search" method="get" autocomplete="off">
+                        <input name="q" type="text" placeholder="Search Q&amp;A" value="" tabindex="1" autocomplete="off" maxlength="240">
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+    <!-- header end -->
+<div class="content">
+    <div class="login">
+            <table cellpadding="0" cellspacing="0">
+                <form action="successful.html" method="get">
+                    <tr>
+                        <td colspan="3" height="30px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="220px">
+                            <p>email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        </td>
+                        <td width="320px">
+                            <input type="text" name="email" id="email" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" height="20px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>password:</p>
+                        </td>
+                        <td>
+                            <input type="password" name="password" id="pwd" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" height="20px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" value="Submit" class="btn"/>
+                        </td>
+                        <td>
+                            <input type="reset" name="Reset" value="Reset" class="btn"/>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="3" height="30px">
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
