@@ -1,10 +1,7 @@
 var frm= $(#postform)
 var data= JSON.stringify(frm.serializeArray());
 
-public JsonResult YourMethod(string o)
-{
-      var saveObject = Newtonsoft.Json.JsonConvert.DeserializeObject<DestinationClass>(o);
-}
+
 
 
 $.ajax({
