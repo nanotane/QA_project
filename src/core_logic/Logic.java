@@ -9,8 +9,6 @@ import java.lang.Throwable;
 import java.util.Date;
 import java.util.List;
 
-import exceptions.TestException;
-
 public class Logic 
 {
 	//going to catch the java exception and show to screen
@@ -81,33 +79,6 @@ public class Logic
 		return "black";//for low ranks its just black
 	}
 	/**
-	 * modify the text for a question
-	 */
-	public String modifyPost(Question modedPost)
-	{
-		//set the modified post date
-		Date d = new Date();
-		modedPost.setDatePosted(d);
-		//TODO
-		//call a persistent logic method
-		return "A MESSAGE";
-	}
-	/**
-	 * Modify the text for an answer
-	 * @param modedPost
-	 * @return
-	 */
-	public String modifyPost(Answer modedPost)
-	{
-//		//set the modified post date
-//		Date d = new Date();
-//		modedPost.setDatePosted(d);
-//		DAO_obj
-//		//call a persistent logic method
-		//TODO
-		return "A MESSAGE";
-	}
-	/**
 	 * Check all of the users posts and votes
 	 * then send back the new rank
 	 */
@@ -121,10 +92,9 @@ public class Logic
 	/**
 	 * Add to the score of a posts
 	 */
-	public String addScore(Answer anAnswer)
+	public Answer addScore(Answer anAnswer)
 	{
-		DAO_obj.voteAnswer(anAnswer.getAnswerID());
-		return "success";
+		return DAO_obj.voteAnswer(anAnswer.getAnswerID());
 		//TODO
 	}
 	/**
@@ -156,19 +126,37 @@ public class Logic
 	/**
 	 * Create a new answer
 	 */
-	public boolean createAnswer(Answer newAnswer, Question parentQuestion)
+	public Answer createAnswer(Answer newAnswer, Question parentQuestion)
 	{
 		//need to get current date and store that
 		return DAO_obj.postAnswer(parentQuestion.getQuestionID(),newAnswer);
+		//TODO get the 
 	}
 	/**
 	 * This will create a question based on a new question object
 	 * @param newQuestion
 	 * @return
 	 */
-	public boolean createQuestion(Question newQuestion)
+	public Question createQuestion(Question newQuestion)
 	{
 			return DAO_obj.postQuestion(newQuestion);
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean deleteQuestion(Question aQuestion)
+	{
+		return false;
+	}
+	/**
+	 * 
+	 * @param anAnswer
+	 * @return
+	 */
+	public boolean deleteAnswer(Answer anAnswer)
+	{
+		return false;
 	}
 	/**
 	 * Gets a sentence and returns a list
@@ -187,6 +175,9 @@ public class Logic
 		 * if list is still not full add something that only matches key word of post
 		 */
 	}
-	//ADD DELETE A QUESTION
-	//TODO
+
+	public static void main(String args[])
+	{
+		
+	}
 }
