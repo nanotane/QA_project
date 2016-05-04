@@ -8,6 +8,7 @@ public class Answer {
 	private String text;
 	private int votes;
 	private Date datePosted;
+	private Date dateModified;
 	
 	//getters and setters for answerID
 	
@@ -60,6 +61,14 @@ public class Answer {
 	public void setDatePosted(Date datePosted) {
 		this.datePosted = datePosted;
 	}
+	
+	//getters and setters for dateModified
+		public Date getDateModified() {
+			return dateModified;
+		}
+		public void setDateModified(Date dateModified) {
+			this.dateModified = dateModified;
+		}
 	
 	
 	
