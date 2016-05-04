@@ -48,9 +48,39 @@ public class DAOLayer {
 	   
    }
    
-   public boolean deleteQuestion(Question question)
+   public boolean deleteQuestion(Question question) throws Exception
    {
-	   return false;
+	   Connection conn = null;
+		 Statement stmt = null;
+		
+		 try{
+				Class.forName("com.mysql.jdbc.Driver");
+
+
+			     
+			      conn = DriverManager.getConnection(DB_URL,USER,PASS);
+			      stmt = conn.createStatement();
+			      String sql;
+			     
+			      sql = "UPDATE Questions SET isDeleted=1 where questionID="+question.getQuestionID();
+			     
+			   
+			      
+			      stmt.executeQuery(sql);
+			      
+			      
+			      
+			      
+			     
+			      
+			     return true;
+			}
+			catch (Exception E)
+			{
+				throw E;
+			}
+	   
+	   
    }
    
    public List<Question> getQuestions() throws Exception
