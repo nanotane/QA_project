@@ -10,8 +10,10 @@
     <link rel="icon" type="../image/png" href="../img/qmark.png">
     <link href="../css/poststyle.css"  rel="stylesheet">
     
-    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js"></script> -->
-	
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
+
 
     
     <title>Post new Question</title>
@@ -40,20 +42,15 @@
 
 		</div>
 		<div class="posting-wrapper">
-			<textarea rows="10" cols="100">
-			</textarea>
+			<form action="submit.js" method="post" id="postform">
+				<textarea rows="10" cols="100" name="comment" placeholder="Enter your Question" onkeydown="if (event.keyCode == 13) { this.form.submit(); return false; }"></textarea>	
+		  			<input type="submit">
+			</form>		
+		</div>
 
-		</div>
-		<div class="subject-wrapper">
-			<form id="sub-search" action="/search" method="get" autocomplete="off">
-                    	<input name="q" type="text" placeholder="Search Subject" value="" tabindex="1" autocomplete="off" maxlength="240">
-                    	<a href = "" class="subject-search">Search</a>  	
-            </form> 
+			<script src="../js/submit.js"></script>
 
-		</div>
-		<div class="submit-button">
-			<a href = "" class="submit-link">Submit</a>
-		</div>
+
  
 	
  </body>
