@@ -1,8 +1,5 @@
-package core_logic;
-import Entities.Answer;
-import Entities.Question;
-import Entities.User;
-import DAOLAyer.DAOLayer;
+
+
 
 import java.lang.Throwable;
 import java.util.Date;
@@ -36,12 +33,12 @@ public class Logic
 	 * @param aQuestion the question we want answers from
 	 * @return sorted list of questions
 	 */
-	public Answer[] getAnswers(Question aQuestion)
+	public List<Answer> getAnswers(int aQuestionID)
 	{
 		int MAX_LIST = 100;
 		List<Answer> ansListTemp;
 		try {
-			ansListTemp = DAO_obj.getAnswers(aQuestion.getQuestionID());
+			ansListTemp = DAO_obj.getAnswers(aQuestionID);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -60,19 +57,20 @@ public class Logic
 			}
 		}
 		//just do a simple sorting algorithm to put the highest posts at the top
-		Answer temp;
-		for(int i = 0; i < MAX_LIST-1; i++)
-		{
-			if(ansList[i].getVotes() < ansList[i+1].getVotes())
-			{
-				//if the first is less than the second then flip them
-				temp = ansList[i];
-				ansList[i] = ansList[i+1];
-				ansList[i+1] = temp;
-			}
-		}
+//		Answer temp;
+//		for(int i = 0; i < MAX_LIST-1; i++)
+//		{
+//			if(ansList[i].getVotes() < ansList[i+1].getVotes())
+//			{
+//				//if the first is less than the second then flip them
+//				temp = ansList[i];
+//				ansList[i] = ansList[i+1];
+//				ansList[i+1] = temp;
+//			}
+//		}
+		
 		//now return the list
-		return ansList;
+		return ansListTemp;
 	}
 	/**
 	 * Determine the user name's color based on the users score
@@ -120,10 +118,10 @@ public class Logic
 	 * @param anAnswer the answer object to add score to
 	 * @return the new user object
 	 */
-	public Answer addScore(Answer anAnswer)
+	public Answer addScore(int anAnswerID)
 	{
 		try {
-			return DAO_obj.voteAnswer(anAnswer.getAnswerID());
+			return DAO_obj.voteAnswer(anAnswerID);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

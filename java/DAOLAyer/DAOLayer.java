@@ -1,10 +1,17 @@
 import java.util.*;
+
+//import com.qacomm.entities.Question;
+
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+
 public class DAOLayer {
 	
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://localhost/QandACommunity";
+	static final String DB_URL = "jdbc:mysql://localhost:3309/QandACommunity";
 	
 	//  Database credentials
    static final String USER = "root";
@@ -23,23 +30,34 @@ public class DAOLayer {
 		      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		      stmt = conn.createStatement();
 		      String sqlCheckUserName , sqlCheckEmail, sqlInsertRecord;
-		      sqlCheckUserName = "SELECT * from Users where userName="+ user.getUserName();
-		      sqlCheckEmail= "Select * from Users where emailID= "+ user.getEmailID();
-		      sqlInsertRecord= "Insert in to Users (userName, password,phoneNumber, emailId, city, userLevel) "
-		      		+ "values ("+user.getUserName()+", "+user.getPassword()+", "+ user.getPhoneNumber()+ ", "+ user.getEmailID()+", "+ user.getCity()+", "+ 
-		    		  user.getUserLevel()+")";
+		      sqlCheckUserName = "SELECT * from Users where userName="+ "'"+user.getUserName()+"'";
+		      sqlCheckEmail= "Select * from Users where emailID= "+ "'"+ user.getEmailID()+"'";
+		      sqlInsertRecord= "Insert into Users (userName, password,phoneNumber, emailId, city, userLevel) "
+		      		+ "values ('"+user.getUserName()+"', '"+user.getPassword()+"', '"+ user.getPhoneNumber()+ "', '"+ user.getEmailID()+"', '"+ user.getCity()+"', '"+ 
+		    		  user.getUserLevel()+"')";
 		      ResultSet rs1 = stmt.executeQuery(sqlCheckUserName);
+		      stmt = conn.createStatement();
 		      ResultSet rs2 = stmt.executeQuery(sqlCheckEmail);
-		   
+		        
+		       if(rs1.next()||rs2.next())
+		       {
+		    	   rs1.close();
+			    	  rs2.close();
+			          stmt.close();
+			          conn.close();
+		    	   return false;
+		       }
 		      
-		      if(rs1.getFetchSize()>0||rs2.getFetchSize()>0){
-		    	  return false;
-		      }
 
-		      else{
-		    	  stmt.executeQuery(sqlInsertRecord);
+		       else{
+		    	   stmt = conn.createStatement();
+		    	  stmt.executeUpdate(sqlInsertRecord);
+		    	  rs1.close();
+		    	  rs2.close();
+		          stmt.close();
+		          conn.close();
 		    	  return true;
-		      }
+		       }
 	   }
 	   catch(Exception e){
 		   throw e;
@@ -72,6 +90,8 @@ public class DAOLayer {
 			      
 			      
 			     
+		          stmt.close();
+		          conn.close();
 			      
 			     return true;
 			}
@@ -97,29 +117,31 @@ public class DAOLayer {
 		      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		      stmt = conn.createStatement();
 		      String sql;
-		      sql = "SELECT * from (select TOP 10 * from Questions where isDeleted=0 Order by datePosted DESC)";
+		      sql = "SELECT * from Questions where isDeleted=0 LIMIT 10";
 		     
 		      ResultSet rs1 = stmt.executeQuery(sql);
 		      
-		      if(rs1.getFetchSize()<=0){
-		    	  return questions;
-		      }
-		      else
-		      {
+		      
+		     // DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+		      //Date date = format.parse(string);
 		    	  questions= new ArrayList<Question>();
 		    	  while(rs1.next()){
 		    		  Question q= new Question();
 		    		  q.setQuestionID(rs1.getInt("questionID"));
 		    		  q.setText(rs1.getString("questionText"));
 		    		  q.setUserID(rs1.getInt("userID"));
-		    		  q.setDatePosted(rs1.getDate("datePosted"));
-		    		  q.setDateModified(rs1.getDate("dateModified"));
+		    		 // q.setDatePosted(format.parse(rs1.getString("datePosted")));
+		    		  //q.setDateModified(format.parse(rs1.getString("dateModified")));
 		    		  q.setVotes(rs1.getInt("votes"));
 		    		  q.setDeleted(rs1.getBoolean("isDeleted"));
 		    		  questions.add(q);
 		    	  }
+		    	  rs1.close();
+		    	 
+		          stmt.close();
+		          conn.close();
 		    	  return questions;
-		      }
+		     
 		}
 		catch (Exception E)
 		{
@@ -147,7 +169,11 @@ public class DAOLayer {
 			     
 			      ResultSet rs1 = stmt.executeQuery(sql);
 			      
-			      if(rs1.getFetchSize()<=0){
+			      if(!rs1.next()){
+			    	  rs1.close();
+			    	  
+			          stmt.close();
+			          conn.close();
 			    	  return q;
 			      }
 			      else
@@ -157,12 +183,16 @@ public class DAOLayer {
 			    		  q.setQuestionID(rs1.getInt("questionID"));
 			    		  q.setText(rs1.getString("questionText"));
 			    		  q.setUserID(rs1.getInt("userID"));
-			    		  q.setDatePosted(rs1.getDate("datePosted"));
-			    		  q.setDateModified(rs1.getDate("dateModified"));
+			    		//  q.setDatePosted(rs1.getDate("datePosted"));
+			    		 // q.setDateModified(rs1.getDate("dateModified"));
 			    		  q.setVotes(rs1.getInt("votes"));
 			    		  q.setDeleted(rs1.getBoolean("isDeleted"));
 			    		  
 			    	  }
+			      rs1.close();
+		    	  
+		          stmt.close();
+		          conn.close();
 			    	  return q;
 			      
 			}
@@ -188,13 +218,17 @@ public class DAOLayer {
 		      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		      stmt = conn.createStatement();
 		      String sql;
-		      sql = "SELECT password from Users where userName="+ user.getUserName();
+		      sql = "SELECT password from Users where userName='"+ user.getUserName()+"'";
 		     
 		      ResultSet rs1 = stmt.executeQuery(sql);
 		     
 		   
 		      
-		      if(rs1.getFetchSize()<=0){
+		      if(!rs1.next()){
+		    	  rs1.close();
+		    	 
+		          stmt.close();
+		          conn.close();
 		    	  return false;
 		      }
 
@@ -202,12 +236,22 @@ public class DAOLayer {
 		    	  
 		    	  password=rs1.getString("password");
 		    	  
-		    	  if(password==user.getPassword())
+		    	  if(password.trim().equals(user.getPassword().trim())){
 		    	  
+		    		  
+		    		  rs1.close();
+			    	  
+			          stmt.close();
+			          conn.close(); 
 		    	  return true;
+		    	  }
 		    	  
-		    	  else
-		    		  return false;
+		    	  else{
+		    		  rs1.close();
+			    	 
+			          stmt.close();
+			          conn.close();
+		    		  return false;}
 		      }
 	   }
 	   catch(Exception e){
@@ -231,13 +275,17 @@ public class DAOLayer {
 		      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		      stmt = conn.createStatement();
 		      String sql;
-		      sql = "SELECT * from Users where userName="+ userName;
+		      sql = "SELECT * from Users where userName='"+ userName+"'";
 		     
 		      ResultSet rs1 = stmt.executeQuery(sql);
 		     
 		   
 		      
-		      if(rs1.getFetchSize()<=0){
+		      if(!rs1.next()){
+		    	  rs1.close();
+		    	
+		          stmt.close();
+		          conn.close();
 		    	  return user;
 		      }
 
@@ -252,6 +300,10 @@ public class DAOLayer {
 		    		  user.setCity(rs1.getString("city"));
 		    		  user.setUserLevel(rs1.getString("userLevel"));
 		    	  }
+		    	  rs1.close();
+		    	
+		          stmt.close();
+		          conn.close();
 		    	 return user;
 		      }
 	   }
@@ -280,7 +332,11 @@ public class DAOLayer {
 		     
 		      ResultSet rs1 = stmt.executeQuery(sql);
 		      
-		      if(rs1.getFetchSize()<=0){
+		      if(!rs1.next()){
+		    	  rs1.close();
+		    	  
+		          stmt.close();
+		          conn.close();
 		    	  return ans;
 		      }
 		      else
@@ -293,10 +349,14 @@ public class DAOLayer {
 		    		  a.setQuestionID(questionID);
 		    		  a.setText(rs1.getString("answerText"));
 		    		  a.setVotes(rs1.getInt("votes"));
-		    		  a.setDatePosted(rs1.getDate("datePosted"));
-		    		  a.setDateModified(rs1.getDate("dateModified"));
+		    		 // a.setDatePosted(rs1.getDate("datePosted"));
+		    		  //a.setDateModified(rs1.getDate("dateModified"));
 		    		  ans.add(a);
 		    	  }
+		    	  rs1.close();
+		    	 
+		          stmt.close();
+		          conn.close();
 		    	  return ans;
 		      }
 		}
@@ -337,8 +397,8 @@ public class DAOLayer {
 		    		  q.setQuestionID(rs1.getInt("questionID"));
 		    		  q.setText(rs1.getString("questionText"));
 		    		  q.setUserID(rs1.getInt("userID"));
-		    		  q.setDatePosted(rs1.getDate("datePosted"));
-		    		  q.setDateModified(rs1.getDate("dateModified"));
+		    		  //q.setDatePosted(rs1.getDate("datePosted"));
+		    		  //q.setDateModified(rs1.getDate("dateModified"));
 		    		  q.setVotes(rs1.getInt("votes"));
 		    		  q.setDeleted(rs1.getBoolean("isDeleted"));
 		    		  questions.add(q);
@@ -368,14 +428,23 @@ public class DAOLayer {
 			      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			      stmt = conn.createStatement();
 			      String sql;
-			      sql = "insert in to Questions (questionText, datePosted, dateModified, userID,votes, isDeleted) values("+question.getText()+","+question.getDatePosted()+" ,"+question.getDateModified()+","+question.getUserID()+","+question.getVotes()+", 0)";
-			     
-			      stmt.executeQuery(sql);
-			     
-			      ResultSet rs1= stmt.executeQuery("Select last_insert_id() as last_id from Questions");
-			      int questionID=rs1.getInt("last_id");
+			     // java.sql.Date datePosted=new java.sql.Date(question.getDatePosted().getTime());
+			      //java.sql.Date dateModified=new java.sql.Date(question.getDateModified().getTime());
+			     // sql = "insert into Questions (questionText, datePosted, dateModified, userID,votes, isDeleted) values('"+question.getText()+"','"+datePosted+"' ,'"+dateModified+"',"+question.getUserID()+","+question.getVotes()+", 0)";
+			      sql = "insert into Questions (questionText, userID,votes, isDeleted) values('"+question.getText()+"',"+question.getUserID()+","+question.getVotes()+", 0)";
+					
+			     stmt.executeUpdate(sql,Statement.RETURN_GENERATED_KEYS);
+			      
+			      ResultSet rs1= stmt.getGeneratedKeys();
+			      rs1.next();
+			      int questionID=rs1.getInt(1);
 			      
 			      question.setQuestionID(questionID);
+			      
+			      rs1.close();
+		    	 
+		          stmt.close();
+		          conn.close();
 			      
 			     return question;
 			}
@@ -402,15 +471,25 @@ public class DAOLayer {
 			      conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			      stmt = conn.createStatement();
 			      String sql;
-			      sql = "insert in to Answers (userID, questionID, answerText, votes, datePosted, dateModified) values("+answer.getUserID()+","+answer.getQuestionID()+" ,"+answer.getText()+","+answer.getVotes()+","+answer.getDatePosted()+","+answer.getDateModified()+")";
+			      //java.sql.Date datePosted=new java.sql.Date(answer.getDatePosted().getTime());
+			      //java.sql.Date dateModified=new java.sql.Date(answer.getDateModified().getTime());
+			      //sql = "insert into Answers (userID, questionID, answerText, votes, datePosted, dateModified) values("+answer.getUserID()+","+answer.getQuestionID()+" ,'"+answer.getText()+"',"+answer.getVotes()+",'"+datePosted+"','"+dateModified+"')";
 			      
-			      stmt.executeQuery(sql);
 			      
-			      ResultSet rs1= stmt.executeQuery("Select last_insert_id() as last_id from Answers");
-			      int answerID=rs1.getInt("last_id");
+			      sql = "insert into Answers (userID, questionID, answerText, votes) values("+answer.getUserID()+","+answer.getQuestionID()+" ,'"+answer.getText()+"',"+answer.getVotes()+")";
+			      
+			      stmt.executeUpdate(sql,Statement.RETURN_GENERATED_KEYS);
+			      
+			      ResultSet rs1= stmt.getGeneratedKeys();
+			      rs1.next();
+			      int answerID=rs1.getInt(1);
 			      
 			      answer.setAnswerID(answerID);
 			     
+			      rs1.close();
+		    	  
+		          stmt.close();
+		          conn.close();
 			      
 			     return answer;
 			}
@@ -439,20 +518,25 @@ public class DAOLayer {
 			      sql = "select * from answers where answerID="+answerID;
 			     
 			      ResultSet rs1=stmt.executeQuery(sql);
+			      if(rs1.next()){
 			      ans.setAnswerID(answerID);
 			      ans.setText(rs1.getString("answerText"));
 			      ans.setUserID(rs1.getInt("userID"));
-			      ans.setDatePosted(rs1.getDate("datePosted"));
-			      ans.setDateModified(rs1.getDate("dateModified"));
+			      //ans.setDatePosted(rs1.getDate("datePosted"));
+			      //ans.setDateModified(rs1.getDate("dateModified"));
 			      ans.setQuestionID(rs1.getInt("questionID"));
+			      }
 			      int finalVotes=votes+1;
 			      ans.setVotes(finalVotes);
-			      sql1="UPDATE Answers SET votes="+finalVotes+"where answerID="+answerID;
+			      sql1="UPDATE Answers SET votes="+finalVotes+" where answerID="+answerID;
 			      
-			      stmt.executeQuery(sql1);
+			      stmt.executeUpdate(sql1);
 			      
 			      
-			      
+			      rs1.close();
+		    	  
+		          stmt.close();
+		          conn.close();
 			      
 			     
 			      

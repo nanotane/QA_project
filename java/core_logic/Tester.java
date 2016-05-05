@@ -1,11 +1,6 @@
-package src.core_logic;
 
 import java.util.Date;
 import java.util.List;
-
-import Entities.Answer;
-import Entities.Question;
-import Entities.User;
 
 public class Tester {
 	/*
@@ -26,7 +21,7 @@ public class Tester {
 		for(int i = 0; i < userList.length; i++)
 		{
 			//set the names to be from the random list + a random number after
-			userList[i].setUserName(randomName()+(int) (Math.random() * 100));
+			userList[i].setUserName(randomName()+(int) (Math.random() * 1000));
 			//set the emails to be from the list of names
 			userList[i].setEmailID(randomName() + "_" + randomName() + ((int) (Math.random() * 100)) + "@gmail.com");
 			//random passwords
@@ -40,6 +35,12 @@ public class Tester {
 				System.out.println("Username: " + userList[i].getUserName());
 				System.out.println("Email: " + userList[i].getEmailID());
 				System.out.println("Password: " + userList[i].getPassword());
+			}
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			//add all the users
 		}
@@ -55,17 +56,23 @@ public class Tester {
 				System.out.println("Email: " + userList[i].getEmailID());
 				System.out.println("Password: " + userList[i].getPassword());
 			}
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		System.out.println("------------------------------------------------");
 		System.out.println("Making questions...");
 		//lets have them all make a question
 		Question temp = new Question();
-		temp.setDatePosted(new Date());
+		//temp.setDatePosted(new Date());
 		temp.setText("TESTING");
 		temp.setVotes(0);
 		for(int i = 0; i < userList.length; i++)
 		{
-			temp.setUserID(userList[i].getUserID());
+			temp.setUserID(i);
 			if(testLogic.createQuestion(temp) == null)
 			{
 				System.out.println("Failed to make a question in entry #" + i);
@@ -73,18 +80,34 @@ public class Tester {
 				System.out.println("Email: " + userList[i].getEmailID());
 				System.out.println("Password: " + userList[i].getPassword());
 			}
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("------------------------------------------------");
+		List<Question> qList = testLogic.getNewestPosts();
+		System.out.println("Top 10 questions:");
+		for(int i = 0; i < 10; i++)
+		{
+			System.out.println("Question " + i);
+			System.out.println("Contents: " + qList.get(i).getText());
+			System.out.println("Question ID: " + qList.get(i).getQuestionID());
+			System.out.println("User ID: " + qList.get(i).getUserID());
 		}
 		System.out.println("------------------------------------------------");
 		System.out.println("Making answers...");
 		//lets make some answers
-		List<Question> qList = testLogic.getNewestPosts();
+		
 		if(qList == null)
 		{
 			System.out.println("FAILED TO GET 10 NEWEST POSTS");
 			System.exit(0);
 		}
 		Answer temp2 = new Answer();
-		temp2.setDatePosted(new Date());
+		//temp2.setDatePosted(new Date());
 		temp2.setText("OF COURSE");
 		temp2.setVotes(0);
 		for(int i = 0; i < userList.length; i++)
@@ -97,17 +120,30 @@ public class Tester {
 				System.out.println("Email: " + userList[i].getEmailID());
 				System.out.println("Password: " + userList[i].getPassword());
 			}
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		System.out.println("------------------------------------------------");
 		System.out.println("Voting on answers...");
-		Answer[] tempAnsList = testLogic.getAnswers(qList.get(0));
-		for(int i = 0; i < userList.length; i++)
+		List<Answer> tempAnsList = testLogic.getAnswers(0);
+		for(int i = 0; i < userList.length-1; i++)
 		{
-			if(testLogic.addScore(tempAnsList[i]) == null)
+			if(testLogic.addScore(tempAnsList.get(i).getAnswerID()) == null)
 			{
 				System.out.println("Failed to vote on an answer in entry #" + i);
 			}
 		}
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		System.out.println("ALL TESTING COMPLETE");
 	}
 	
