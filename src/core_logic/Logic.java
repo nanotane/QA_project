@@ -216,7 +216,16 @@ public class Logic
 	 */
 	public boolean deleteQuestion(Question aQuestion)
 	{
-		return DAO_obj.deleteQuestion(aQuestion);
+		try
+		{
+			return DAO_obj.deleteQuestion(aQuestion);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		
 		//TODO maybe set up try catch
 	}
 	/**
