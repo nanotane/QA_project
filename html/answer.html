@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question</title>
+    <link rel="icon" type="../image/png" href="../img/qmark.png">
+    <link href="../css/poststyle.css"  rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+</head>
+<body>
+<div class ="wrapper">
+
+    <div class="header">
+        <a href = "index.html"><img class="logo-brand" src="../img/logo.png" alt=""/>
+
+            <div class="menu-items">
+                <a href = "login.html" class="login-link">log in</a>
+                <a href = "register.html" class="login-link">sign up</a>
+
+                <div class="search-container">
+                    <form id="search" action="/search" method="get" autocomplete="off">
+                        <input name="q" type="text" placeholder="Search Q&amp;A" value="" tabindex="1" autocomplete="off" maxlength="240">
+                    </form>
+                </div>
+            </div>
+            </a>
+    </div>
+</div>
+    <div class="contentWrapper">
+        <h2> Here is the question and answer:</h2>
+        <script src="../js/show.js"></script>
+        <script src="../js/answer.js"></script>
+    </div>
+    <div class="post-head-wrapper">
+        <h1> My Answer </h1>
+        <tbody id="answer-list"></tbody>
+        </form>
+
+    </div>
+    <div class="posting-wrapper">
+        <form action="submit.js" method="post" id="answer">
+            <textarea rows="10" cols="100" name="comment" placeholder="Enter your Answer" onkeydown="if (event.keyCode == 13) { this.form.submit(); return false; }"></textarea>
+            <input type="submit">
+        </form>
+    </div>
+
+
+
+
+
+</body>
+<!--<script type="text/template" id="show-question-template">-->
+    <!--<tr>-->
+        <!--<td>${userid}</td>-->
+        <!--</tr>-->
+    <!--<tr>-->
+        <!--<td>${questionid}</td>-->
+        <!--</tr>-->
+    <!--<tr>-->
+        <!--<td>${questiontext}</td>-->
+
+    <!--</tr>-->
+<!--</script>-->
+<!--<script type="text/template" id="show-answer-template">-->
+    <!--<tr>-->
+        <!--<td>${userid}</td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<td>${answerid}</td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<td>${answertext}</td>-->
+
+    <!--</tr>-->
+<!--</script>-->
+</html>
