@@ -3,7 +3,7 @@
 	//model
 	var DataService = (function () {
 		var SERVER = "http://localhost:8080";
-		var ENDPOINT = "/";
+		var ENDPOINT = "/questions/top10";
 		return {
 		     getTopTenProfiles: function (currentUser) {
 		         return $.ajax({
