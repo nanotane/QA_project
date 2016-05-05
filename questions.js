@@ -3,7 +3,7 @@
 	//model
 	var DataService = (function () {
 		var SERVER = "http://localhost:8080";
-		var ENDPOINT = "/stack_overflow_clone/json/test.json";
+		var ENDPOINT = "/questions/top10";
 		return {
 		     getTopTenProfiles: function (currentUser) {
 		         return $.ajax({
@@ -33,7 +33,6 @@
 											"</div>" +
 											"<div class='post-info'>" +
 												"<h6> posted on </h6>" +
-												"<h6>" + questions.topTenList[i].datePosted + "</h6>" +
 												"<h6> by </h6>" +
 												"<h6>" + questions.topTenList[i].userID + "</h6>" +
 											"</div>" +
