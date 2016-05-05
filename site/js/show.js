@@ -19,7 +19,7 @@
 
 
         var SERVER = "http://localhost:8080";
-        var ENDPOINT = "/stack_overflow_clone/json/" + id + ".json";
+        var ENDPOINT = "/questions/" + id;
 
         return {
             getQuestion: function () {
