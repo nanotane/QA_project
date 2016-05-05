@@ -244,7 +244,18 @@ public class Logic
 			return null;
 		}
 	}
-
+	public Question getQuestion(int questionID)
+	{
+		try
+		{
+			return DAO_obj.getQuestion(questionID);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
 //	public static void main(String args[])
 //	{
 //		Logic testLogic = new Logic();//create a new logic layer for testing
