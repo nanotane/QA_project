@@ -1,22 +1,6 @@
 //submit
 
 
-$.ajax({
-    type: "POST",
-    url: "your url with method that accpects the data",
-    dataType: "JSON",
-    data: {
-        //
-    },
-    success: function (data) {
-        alert('Success');
-
-    },
-    error: function () {
-        alert('Error');
-    }
-});
-
 (function () {
 
         //VIEW
