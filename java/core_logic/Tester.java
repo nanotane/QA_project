@@ -1,4 +1,4 @@
-package core_logic;
+package src.core_logic;
 
 import java.util.Date;
 import java.util.List;
@@ -17,16 +17,20 @@ public class Tester {
 	public static void main(String args[])
 	{
 		Logic testLogic = new Logic();
-		User userList[] = new User[100];
+		User userList[] = new User[100];//change the size of this list for more tests to be run
+		for(int i = 0; i < userList.length;i++)
+		{
+			userList[i] = new User();
+		}
 		System.out.println("Creating users...");
 		for(int i = 0; i < userList.length; i++)
 		{
 			//set the names to be from the random list + a random number after
 			userList[i].setUserName(randomName()+(int) (Math.random() * 100));
 			//set the emails to be from the list of names
-			userList[i].setEmailID(randomName() + "_" + randomName() + (Math.random() * 100) + "@gmail.com");
+			userList[i].setEmailID(randomName() + "_" + randomName() + ((int) (Math.random() * 100)) + "@gmail.com");
 			//random passwords
-			userList[i].setPassword(Integer.toString((int) Math.random() * 1000));
+			userList[i].setPassword("12345");
 			//set level
 			userList[i].setUserLevel("0");
 			
