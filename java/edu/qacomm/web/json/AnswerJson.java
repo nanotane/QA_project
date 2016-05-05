@@ -1,8 +1,8 @@
 package edu.qacomm.web.json;
 
 import java.util.Date;
-
 import com.qacomm.entities.*;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AnswerJson {
@@ -10,7 +10,7 @@ public class AnswerJson {
 	private int answerID;
 	private int userID;
 	private int questionID;
-	private String text;
+	private String atext;
 	private int votes;
 	private Date datePosted;
 	
@@ -28,7 +28,7 @@ public class AnswerJson {
 	}
 	@JsonProperty
 	public String getText() {
-		return text;
+		return atext;
 	}
 	@JsonProperty
 	public int getVotes() {
@@ -42,14 +42,17 @@ public class AnswerJson {
 		this.answerID = a.getAnswerID();
 		this.userID = a.getUserID();
 		this.questionID = a.getQuestionID();
-		this.text = a.getText();
+		this.atext = a.getText();
 		this.votes = a.getVotes();
 		this.datePosted = a.getDatePosted();
 	}
 	
 	public Answer asAnswer(){
-		//TO DO
-		return null;
+		Answer answer = new Answer();
+		answer.setText(atext);
+		answer.setVotes(0);
+		answer.setDatePosted(new Date());
+		return answer;
 	}
 	
 	

@@ -18,18 +18,22 @@ public class qacommAPI {
 	}
 
 	
-	//public Question postQuestion(Question question){
-		//return dao.postQuestion(question);
+	public Question postQuestion(Question question){
+		return log.createQuestion(question);
 		
-	//}
+	}
 	
-	//public Answer postAnswer(int questionID, Answer answer){
-		//return dao.postAnswer(questionID, answer);
-	//}
+	public Question getQuestion(int questionID){
+		return log.getQuestion(questionID);
+		
+	}
+	
+	public Answer postAnswer(int questionID, Answer answer){
+		return log.createAnswer(answer,questionID);
+	}
 	
 	//public boolean voteAnswer(int answerID){
-		//if(dao.voteAnswer(answerID)) return true;
-		//else return false;
+		
 	//}
 	
 }

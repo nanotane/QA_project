@@ -10,12 +10,16 @@ public class QuestionJson {
 
 	private int questionID;
 	private int userID;
-	private String text;
+	private String qtext;
 	private int votes;
 	private Date datePosted;
 	private boolean isDeleted;
 	private List<Answer> answers=null;
 	
+	//public List<AnswerWrapper> createWrapper(answers){
+	//	AnswerWrapper wrapperList = new ArrayList<AnswerWrapper>
+		//return null;
+	//}
 	
 	@JsonProperty
 	public int getQuestionID() {
@@ -28,7 +32,7 @@ public class QuestionJson {
 	
 	@JsonProperty
 	public String getText() {
-		return text;
+		return qtext;
 	}
 	
 	@JsonProperty
@@ -53,16 +57,19 @@ public class QuestionJson {
 	public QuestionJson(Question q) {
 		this.questionID = q.getQuestionID();
 		this.userID = q.getUserID();
-		this.text = q.getText();
+		this.qtext = q.getText();
 		this.votes = q.getVotes();
 		this.datePosted = q.getDatePosted();
 		this.isDeleted = q.isDeleted();
 		this.answers = q.getAnswers();
 	}
 	
-	public Question asQuesion(){
-		//TO DO
-		return null;
+	public Question asQuestion(){
+		Question q = new Question();
+		q.setText(qtext);
+		q.setDatePosted(new Date());
+		q.setDeleted(false);
+		return q;
 	}
 	
 }

@@ -32,45 +32,40 @@ public class ResourceAPI {
 		return Response.ok(topTen).build();
 	}
 	
-	//@POST
-    //@Timed
-	//public Response postQuestion(QuestionJson json){
-		//Question question = json.asQuesion();
-		//Question created = api.postQuestion(question);
-	    //return Response.ok(new QuestionJson(created)).build();
-	//}
 	
-	//@GET
-    //@Path("/{questionID}")
-    //@Timed
-	//public Response getQuestion(@PathParam("questionID") int qID){
-		/*
-		Optional<Question> result = api.getQuestion(qID);
-        if (result.isPresent()) {
-            Question question = result.get();
-            return Response.ok(new QuestionJson(question)).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-		*/
-		//return null;
-	//}
+	@POST
+	@Path("/question")
+	@Timed
+	public Response postQuestion(QuestionJson json){
+		Question question = json.asQuestion();
+		Question created = api.postQuestion(question);
+	    return Response.ok(new QuestionJson(created)).build();
+	}
 	
-	//@POST
-    //@Path("/{questionID}/answer")
-    //@Timed
-	//public Response postAnswer(@PathParam("questionID") int qID, AnswerJson json){
-		//Answer answer = json.asAnswer();
-		//Answer created = api.postAnswer(qID, answer);
-		//return Response.ok(new AnswerJson(created)).build();
+	
+	@GET
+    @Path("/{questionID}")
+    @Timed
+	public Response getQuestion(@PathParam("questionID") int qID){
+		QuestionJson question = new QuestionJson(api.getQuestion(qID));
+		return Response.ok(question).build();
+	}
+	
+	
+	@POST
+    @Path("/answer")
+    @Timed
+	public Response postAnswer(AnswerJson json, @QueryParam("for") String qID){
+		Answer answer = json.asAnswer();
+		Answer created = api.postAnswer(Integer.parseInt(qID), answer);
+		return Response.ok(new AnswerJson(created)).build();
 		
-	//}
+	}
+	
+	
 	
 	//public Response voteAnswer(){
+		
 		//return null;
-	//}
-	
-	
-	
-	
+	//}	
 }
