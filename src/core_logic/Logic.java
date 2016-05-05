@@ -5,6 +5,7 @@ import Entities.User;
 import DAOLAyer.DAOLayer;
 
 import java.lang.Throwable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,12 +21,13 @@ public class Logic
 	public List<Question> getNewestPosts()
 	{
 		//Persistent logic to get the posts
-		List<Question> qList;
+		List<Question> qList = new ArrayList<Question>();
 		try {
 			qList = DAO_obj.getQuestions();
 		} catch (Exception e) {
 			e.printStackTrace();
-			qList = null;
+			qList.add(new Question());
+			qList.add(new Question());
 		}
 		return qList;
 	}
@@ -216,7 +218,16 @@ public class Logic
 	 */
 	public boolean deleteQuestion(Question aQuestion)
 	{
-		return DAO_obj.deleteQuestion(aQuestion);
+		try
+		{
+			return DAO_obj.deleteQuestion(aQuestion);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		
 		//TODO maybe set up try catch
 	}
 	/**
