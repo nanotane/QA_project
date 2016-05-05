@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question</title>
+    <link rel="icon" type="../image/png" href="../img/qmark.png">
+    <link href="../css/poststyle.css"  rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script src="../js/show.js"></script>
+    <script src="../js/answertemp.js"></script>
+
+</head>
+<body>
+<div class ="wrapper">
+
+    <div class="header">
+        <a href = "index.html"><img class="logo-brand" src="../img/logo.png" alt=""/>
+
+            <div class="menu-items">
+                <a href = "login.html" class="login-link">log in</a>
+                <a href = "register.html" class="login-link">sign up</a>
+
+                <div class="search-container">
+                    <form id="search" action="/search" method="get" autocomplete="off">
+                        <input name="q" type="text" placeholder="Search Q&amp;A" value="" tabindex="1" autocomplete="off" maxlength="240">
+                    </form>
+                </div>
+            </div>
+            </a>
+    </div>
+</div>
+    <div class="contentWrapper">
+        <h2> Here is the question and answer:</h2> 
+    </div>
+    <div class="post-head-wrapper">
+        <h1> My Answer </h1>
+    </div>
+    <div class="posting-wrapper">
+        <form id="postform">
+            <textarea rows="10" cols="100" id="comment" placeholder="Enter your Answer"></textarea>
+            <input type = 'submit' id = "submitbutton">
+        </form>
+    </div>
+</body>
+<script type="text/template" id="show-question-template">
+    <tr>
+        <td>${userID}</td>
+        <td>${questionID}</td>
+        <td>${qtext}</td>
+    </tr>
+</script>
+</html>
