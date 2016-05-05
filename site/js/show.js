@@ -1,29 +1,13 @@
-
 (function () {
 
     //VIEW
     var UIService = (function () {
 
-        var applyTemplate = function (template, data) {
-            return template
-                .replace(/\${userID}/g, data.userID)
-                .replace(/\${questionID}/g, data.questionID)
-                .replace(/\${qtext}/g, data.qtext)
-
-        };
-        var renderResult = function (results) {
-            return results.map(function (data) {
-                return applyTemplate(resultTemplate, data);
-            }).join("");
-        };
-
-
-        var resultTemplate = $("#show-question-template").html();
-
-        return {
-            displayQuestion: function (results) {
-                var rendering = renderResult(results);
-                $("#question-list").html(rendering);
+        return{
+            displayQuestion: function(questions){
+                var template ="</br><h4>" + questions.question[0].userID + "</h4></br></br>" +
+                              "<h5>" + questions.question[0].qtext + "</h5>";         
+                $('.contentWrapper').append(template);
             }
         }
     }());
@@ -35,8 +19,7 @@
 
 
         var SERVER = "http://localhost:8080";
-        var ENDPOINT = "/question/" + id;
-
+        var ENDPOINT = "/stack_overflow_clone/json/" + id + ".json";
 
         return {
             getQuestion: function () {
